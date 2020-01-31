@@ -1,0 +1,31 @@
+﻿@using PizzaBox.Domain.Models;
+@using PizzaBox.Storing.Repositories;
+@{
+    ViewData["Title"] = "ViewStores";
+    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
+    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
+    RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
+    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
+    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
+}
+
+<h1>View Stores</h1>
+@{
+    var stores = repositoryStoreInfo.GetItems().ToList();
+    if (stores.Count() == 0)
+    {
+        <h2>There are no stores in existance</h2>
+    }
+    foreach (StoreInfo st in stores)
+    {
+       
+
+        <p>@st.StoreName</p>
+        <p>@st.City</p>
+        <p>@st.State</p>
+        <p>@st.ZipCode</p>
+        <hr />
+    }
+    
+}
+<a asp-action="Index" asp-controller="Store">Back to Store Manager Menu</a>

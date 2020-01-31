@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "MainMenu";
+}
+
+<h1>Main Menu</h1>
+<a asp-action="PlaceOrder">Place an order</a>
+<br />
+<a asp-action="PurchaseHistory">View Your Purchace history</a>
+<br />
+<a asp-action="ViewProfile">View Your Profile</a>
+<br />
+<a asp-action="UpdateProfile">Update Your Profile</a>
+<br />
+<button type="button" onclick="location.href='@Url.Action("Logout", "SignedIn")'">Logout</button>

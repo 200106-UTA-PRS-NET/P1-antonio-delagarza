@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewData["Title"] = "KeepOrdering";
+}
+
+<h3>Would you like to add more pizzas?</h3>
+<button type="button" onclick="location.href='@Url.Action("SelectPizza", "SignedIn")'">Yes</button>
+<button type="button" onclick="location.href='@Url.Action("SubmitOrder", "SignedIn")'">No</button>

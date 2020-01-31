@@ -1,0 +1,81 @@
+﻿@using PizzaBox.Storing.Repositories;
+@using PizzaBox.Domain.Models;
+@{
+    ViewData["Title"] = "PurchaseHistory";
+    string email = TempData["userEmail"] as string;
+    string password = TempData["userPassword"] as string;
+    TempData.Keep();
+    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
+    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
+    RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
+    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
+    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
+}
+
+<h1>Purchase History of @email </h1>
+@{
+    var userOrders = repositoryOrdersUserInfo.GetUserPurchases(email).ToList();
+    if (userOrders.Count() == 0)
+    {
+        <p>You have not made any others yet</p>
+    }
+    else
+    {
+        foreach (OrdersUserInfo temp in userOrders)
+        {
+            decimal price = 0M;
+            <p>Order Id: @temp.OrderId</p>
+
+            <p>@temp.OrderDateTime</p>
+
+
+            var usersOrdersPizzas = repositoryOrdersPizzaInfo.GetOrdersPizzas(temp.OrderId).ToList();
+            foreach (OrdersPizzaInfo of in usersOrdersPizzas)
+            {
+                Pizzas pi = repositoryPizzas.GetPizzasbyId(of.PizzaId);
+
+                <p>Size: @pi.Size</p>
+
+                <p>Crust: @pi.Crust</p>
+
+                <p>Crust Flavor: @pi.CrustFlavor</p>
+
+                <p>Sauce: @pi.Sauce</p>
+
+                <p>Sauce Amount: @pi.SauceAmount</p>
+
+                <p>Cheese Amount: @pi.CheeseAmount</p>
+
+
+                if (pi.Topping1 != null)
+                {
+                    <p>Toppin1: @pi.Topping1</p>
+
+                }
+                if (pi.Topping2 != null)
+                {
+                    <p>Toppin2: @pi.Topping2</p>
+
+                }
+                if (pi.Topping3 != null)
+                {
+                    <p>Toppin3: @pi.Topping3</p>
+
+                }
+                <p>Price: @pi.Price</p>
+                <br />
+
+                price += pi.Price;
+
+            }
+            int storeId = repositoryStoreOrdersInfo.GetStoreId(temp.OrderId);
+            string storename = repositoryStoreInfo.GetStoreName(storeId);
+            <p>Store: @storename</p>
+            <p>Total: @price</p>
+            <hr />
+
+        }
+    }
+    <a asp-action="Index" asp-controller="SignedIn">Back to User Menu</a>
+}
+

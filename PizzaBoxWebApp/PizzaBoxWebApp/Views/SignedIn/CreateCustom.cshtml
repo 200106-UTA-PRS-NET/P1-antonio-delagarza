@@ -1,0 +1,79 @@
+﻿@using PizzaBox.Domain.Models
+@using PizzaBox.Storing.Repositories;
+@model PizzaBox.Domain.Models.Pizzas;
+@{
+    ViewData["Title"] = "CreateCustom";
+    TempData.Keep();
+}
+
+<h1>Create Custom</h1>
+
+<form asp-controller="SignedIn" asp-action="CreateCustomPizza" method="get">
+
+    @{ var sizeAvailable = Enum.GetNames(typeof(RepositoryPizzas.SizeAvailable));
+        <h4>Size</h4>
+        for (int i = 0; i < sizeAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.Size, sizeAvailable[i])<text>@sizeAvailable[i]</text><br />
+        }
+        var crustAvailable = Enum.GetNames(typeof(RepositoryPizzas.CrustAvailable));
+        <h4>Crust</h4>
+        for (int i = 0; i < crustAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.Crust, crustAvailable[i])<text>@crustAvailable[i]</text><br />
+        }
+
+        var crustFlavorAvailable = Enum.GetNames(typeof(RepositoryPizzas.CrustFlavorAvailable));
+        <h4>Crust Flavor</h4>
+        for (int i = 0; i < crustFlavorAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.CrustFlavor, crustFlavorAvailable[i])<text>@crustFlavorAvailable[i]</text><br />
+        }
+        var saucesAvailable = Enum.GetNames(typeof(RepositoryPizzas.SauceAvailable));
+        <h4>Sauce</h4>
+        for (int i = 0; i < saucesAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.Sauce, saucesAvailable[i])<text>@saucesAvailable[i]</text><br />
+        }
+        var amountsAvailable = Enum.GetNames(typeof(RepositoryPizzas.AmountsAvailable));
+        <h4>Saunce Amount</h4>
+        for (int i = 0; i < amountsAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.SauceAmount, amountsAvailable[i])<text>@amountsAvailable[i]</text><br />
+        }
+
+        <h4>Cheese Amount</h4>
+        for (int i = 0; i < amountsAvailable.Length; i++)
+        {
+            @Html.RadioButtonFor(e => e.CheeseAmount, amountsAvailable[i])<text>@amountsAvailable[i]</text><br />
+        }
+        var toppingsAvailable = Enum.GetNames(typeof(RepositoryPizzas.ToppingsAvailable));
+        <h4>Toppings</h4>
+        @Html.RadioButtonFor(e => e.Topping1, "")<text>none</text><br />;
+        for (int i = 0; i < toppingsAvailable.Length; i++)
+        {
+
+            @Html.RadioButtonFor(e => e.Topping1, toppingsAvailable[i])<text>@toppingsAvailable[i]</text><br />
+        }
+
+        <h4>Add another topping for 50 cents</h4>
+        @Html.RadioButtonFor(e => e.Topping2, "")<text>none</text><br />
+        for (int i = 0; i < toppingsAvailable.Length; i++)
+        {
+
+            @Html.RadioButtonFor(e => e.Topping2, toppingsAvailable[i])<text>@toppingsAvailable[i]</text><br />
+        }
+
+        <h4>Add another topping for 50 cents</h4>
+        @Html.RadioButtonFor(e => e.Topping3, "")<text>none</text><br />;
+        for (int i = 0; i < toppingsAvailable.Length; i++)
+        {
+
+            @Html.RadioButtonFor(e => e.Topping3, toppingsAvailable[i])<text>@toppingsAvailable[i]</text><br />
+        }
+
+    }
+
+    <input type="submit" value="Add Pizza">
+
+</form>

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Store Manager Menu</h1>
+
+<a asp-action="ViewStores">View All Stores</a>
+<br />
+<a asp-action="SelectStore">View Store Orders/Modify Store</a>
+<br />
+<a asp-action="UpdateProfile">Create a Preset Pizza</a>
+<br />
+<a asp-action="UpdateProfile">Add a Preset Pizza to Store</a>
+<br />
+<button type="button" onclick="location.href='@Url.Action("Index", "Home")'">Exit</button>
+

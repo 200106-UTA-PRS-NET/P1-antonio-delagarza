@@ -1,0 +1,27 @@
+﻿@using PizzaBox.Storing.Repositories;
+@model PizzaBoxWebApp.Models.StoreInfoViewModel;
+@{
+    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
+    ViewData["Title"] = "SelectStore";
+}
+
+@{
+    if (repositoryStoreInfo.NumStores() == 0)
+    {
+        <h1>There are no stores in existance</h1>
+    }
+    else
+    {
+
+        var stores = repositoryStoreInfo.GetItems().ToList();
+        <h2>Select a store by Id</h2>
+        <form asp-controller="Store" method="get">
+            @foreach (var s in stores)
+            {
+                @Html.RadioButtonFor(e => e.StoreId, s.StoreId)<text>StoreId: @s.StoreId</text><br />
+            }
+            <input type="submit" value="View Orders" formaction="ViewStoreOrders" />
+            <input type="submit" value="Modify Store" formaction="ModifyStore" />
+        </form>
+    }
+}
