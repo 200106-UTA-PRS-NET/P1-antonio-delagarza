@@ -20,21 +20,8 @@ namespace PizzaBoxWebApp.Test
             Assert.Equal(user.Email, email);
         }
 
-        [Fact]
-        public void CalculatePizzaPrice()
-        {
-            //Arrange
-            pizza = new Pizzas()
-            {
-                PizzaId = 1,
-                Size = "Large",
-                Crust = "Thin",
-                CrustFlavor = "None",
-
-            };
-            //Act
-            
-        }
+        
+       
         
     }
 }

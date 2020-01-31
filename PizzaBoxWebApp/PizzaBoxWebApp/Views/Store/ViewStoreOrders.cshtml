@@ -20,11 +20,11 @@
     foreach (StoreOrdersInfo st in storeOrders)
     {
         OrdersUserInfo or = repositoryOrdersUserInfo.GetStoreOrderDetails(st.OrderId);
-        <p>_____________________________</p>
+        <hr />
         <p>OrderId: @or.OrderId</p>
         <p>Customer: @or.Email</p>
         <p>@or.OrderDateTime</p>
-        
+
         var pizzasInfo = repositoryOrdersPizzaInfo.GetOrdersPizzas(or.OrderId).ToList();
 
         foreach (OrdersPizzaInfo op in pizzasInfo)
@@ -33,4 +33,5 @@
         }
 
     }
+    <a asp-action="Index" asp-controller="Store">Back to Store Manager Menu</a>
 }

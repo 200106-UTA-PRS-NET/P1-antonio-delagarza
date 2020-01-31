@@ -79,6 +79,10 @@ namespace PizzaBoxWebApp.Controllers
         }
         public IActionResult Index()
         {
+            TempData["storeId"] = null;
+            TempData["Total"] = null;
+            TempData["orderId"] = null;
+            PizzaList.manyPizzas.Clear();
             string email = TempData["UserEmail"] as string;
             string password = TempData["UserPassword"] as string;
             
@@ -106,6 +110,35 @@ namespace PizzaBoxWebApp.Controllers
         {
             //add the order to the database
             TempData["storeId"] = st.StoreId;
+
+
+            var storeOrders = repositoryStoreOrdersInfo.GetStoreOrders(Convert.ToInt32(TempData["storeId"])).ToList();
+            if (storeOrders.Count() != 0)
+            {
+
+                var userPurchases = repositoryOrdersUserInfo.GetUserPurchases(TempData["UserEmail"] as string).ToList();
+
+                if (userPurchases.Count() != 0)
+                {
+                    var joinedTables = (from e in storeOrders
+                                        join f in userPurchases
+                                        on e.OrderId equals f.OrderId
+                                        orderby f.OrderDateTime descending
+                                        select f.OrderDateTime).ToList();
+
+                    DateTime now = DateTime.Now;
+                    if (joinedTables.Count() != 0)
+                    {
+                        var o = joinedTables.First();
+                        int hoursPassed = o.Subtract(now).Hours;
+                        if (hoursPassed < 24)
+                        {
+                            return View("OrderRestriction");
+                        }
+                    }
+
+                }
+            }
             string total = "0.0000";
             TempData["Total"] = total;
             OrdersUserInfo ordersUserInfo = new OrdersUserInfo()
@@ -140,7 +173,7 @@ namespace PizzaBoxWebApp.Controllers
         public IActionResult CreatePizza(CombinedPizzasViewModel cp)
         {
             
-            if (cp.selectedPizza != null)
+            if (cp.selectedPizza != "Custom")
             {
                 PresetPizzas preset = repositoryPresetPizzas.GetPizza(cp.selectedPizza);
                 Pizzas p = new Pizzas()
@@ -225,12 +258,9 @@ namespace PizzaBoxWebApp.Controllers
                 };
                 repositoryOrdersPizzaInfo.Add(ordersPizza);
             }
-            TempData["storeId"] = null;
-            TempData["Total"] = null;
-            TempData["orderId"] = null;
-            PizzaList.manyPizzas.Clear();
+            return View("OrderDetails");
            
-            return RedirectToAction(nameof(Index));
+            
         }
         #endregion
        ////////////////////////////////////////////////////////////////

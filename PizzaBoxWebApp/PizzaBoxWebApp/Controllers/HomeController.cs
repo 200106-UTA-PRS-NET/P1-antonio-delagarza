@@ -5,7 +5,7 @@ using PizzaBoxWebApp.Models;
 using PizzaBox.Storing.Repositories;
 using PizzaBox.Domain.Models;
 using Microsoft.AspNetCore;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace PizzaBoxWebApp.Controllers
 {
@@ -52,7 +52,14 @@ namespace PizzaBoxWebApp.Controllers
                 FirstName = u.FirstName,
                 LastName = u.LastName
             };
-            repositoryUsers.Add(user);
+            try
+            {
+                repositoryUsers.Add(user);
+            }
+            catch (DbUpdateException)
+            {
+                return View("RegistrationError");
+            }
 
             return RedirectToAction(nameof(Index));
         }

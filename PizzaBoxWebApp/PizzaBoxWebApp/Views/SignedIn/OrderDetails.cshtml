@@ -1,0 +1,61 @@
+﻿@using PizzaBox.Domain.Models;
+@using PizzaBox.Storing.Repositories;
+@{
+    ViewData["Title"] = "OrderDetails";
+
+    RepositoryUsers repositoryUsers = new RepositoryUsers();
+    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
+    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
+    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
+    RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
+    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
+    RepositoryPresetPizzas repositoryPresetPizzas = new RepositoryPresetPizzas();
+    RepositoryStorePresetPizzas repositoryStorePresetPizzas = new RepositoryStorePresetPizzas();
+    TempData.Keep();
+}
+
+<h1>Order Details</h1>
+@{
+    //getg store name
+    <p>Store: @repositoryStoreInfo.GetStoreName(Convert.ToInt32(TempData["storeId"]))</p>
+    var order = repositoryOrdersUserInfo.GetStoreOrderDetails(Convert.ToInt32(TempData["orderId"]));
+    <p>Order Id: @order.OrderId</p>
+    <p>@order.OrderDateTime.</p>
+
+    var usersOrdersPizzas = repositoryOrdersPizzaInfo.GetOrdersPizzas(Convert.ToInt32(TempData["orderId"])).ToList();
+    foreach (var u in usersOrdersPizzas)
+    {
+        Pizzas pizzas = repositoryPizzas.GetPizzasbyId(u.PizzaId);
+        <p>Size: @pizzas.Size</p>
+
+        <p>Crust: @pizzas.Crust</p>
+
+        <p>Crust Flavor: @pizzas.CrustFlavor</p>
+
+        <p>Sauce: @pizzas.Sauce</p>
+
+        <p>Sauce Amount: @pizzas.SauceAmount</p>
+
+        <p>Cheese Amount: @pizzas.CheeseAmount</p>
+
+
+        if (pizzas.Topping1 != null)
+        {
+            <p>Toppin1: @pizzas.Topping1</p>
+
+        }
+        if (pizzas.Topping2 != null)
+        {
+            <p>Toppin2: @pizzas.Topping2</p>
+
+        }
+        if (pizzas.Topping3 != null)
+        {
+            <p>Toppin3: @pizzas.Topping3</p>
+
+        }
+        <p>Price: @pizzas.Price</p>
+        <hr />
+    }
+    <a asp-action="Index" asp-controller="SignedIn">Back to User Menu</a>
+}

@@ -21,7 +21,7 @@
         <form asp-action="PlaceOrder" asp-controller="SignedIn">
             @foreach(var s in stores)
             {
-                @Html.RadioButtonFor(e => e.StoreId, s.StoreId)<text>StoreId: @s.StoreId</text><br />
+                @Html.RadioButtonFor(e => e.StoreId, s.StoreId)<text>StoreId: @s.StoreId @s.StoreName @s.City @s.State @s.ZipCode </text><br />
             }
             <input type="submit" value="submit"/>
         </form>

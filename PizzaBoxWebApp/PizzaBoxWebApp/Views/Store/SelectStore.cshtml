@@ -18,7 +18,7 @@
         <form asp-controller="Store" method="get">
             @foreach (var s in stores)
             {
-                @Html.RadioButtonFor(e => e.StoreId, s.StoreId)<text>StoreId: @s.StoreId</text><br />
+                @Html.RadioButtonFor(e => e.StoreId, s.StoreId)<text>StoreId: @s.StoreId @s.StoreName @s.City @s.State @s.ZipCode</text><br />
             }
             <input type="submit" value="View Orders" formaction="ViewStoreOrders" />
             <input type="submit" value="Modify Store" formaction="ModifyStore" />
