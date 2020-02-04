@@ -7,11 +7,32 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
+  pathtosolution: 'PizzaBoxWebApp/'
+  pathtoproject: 'PizzaBoxWebApp/PizzaBoxWebApp'
+  pathtotest: 'PizzaBoxWebApp/PizzaBoxWebApp.Test'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: 
+    dotnet build --configuration $(buildConfiguration)
+  workingDirectory: $(pathtosolution)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: dotnet test
+    --configuration $(buildConfiguration)
+    --logger trx
+    --no-build
+    --results-directory $(Build.ArtifactStagingDirectory)/PizzaBoxWebApp.Test/
+    /p:CollectCoverage=true
+  workingDirectory: $(pathtosolution)
+  displayName: 'dotnet test'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '*.trx'
+    searchFolder: '$(Build.ArtifactStagingDirectory)/PizzaBoxWebApp.Test'
+  displayName: 'Publish test results'
