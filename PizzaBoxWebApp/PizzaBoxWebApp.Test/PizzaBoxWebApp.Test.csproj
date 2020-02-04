@@ -20,7 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\P0-antonio-delagarza\PizzaBox\PizzaBox.Domain\PizzaBox.Domain.csproj" />
     <ProjectReference Include="..\..\..\P0-antonio-delagarza\PizzaBox\PizzaBox.Storing\PizzaBox.Storing.csproj" />
-    <ProjectReference Include="..\PizzaBoxWebApp\PizzaBoxWebApp.csproj" />
+    <ProjectReference Include="..\PizzaBoxWebApp.Web\PizzaBoxWebApp.Web.csproj" />
+
   </ItemGroup>
 
 </Project>
