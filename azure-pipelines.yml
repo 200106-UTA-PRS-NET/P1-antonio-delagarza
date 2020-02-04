@@ -11,8 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  pathtosolution: 'PizzaBoxWebApp/'
-  pathtoproject: 'PizzaBoxWebApp/PizzaBoxWebApp'
+  pathtosolution: 'PizzaBoxWebApp'
+  pathtoproject: 'PizzaBoxWebApp/PizzaBoxWebApp.Web'
   pathtotest: 'PizzaBoxWebApp/PizzaBoxWebApp.Test'
 
 steps:
