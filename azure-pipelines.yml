@@ -16,6 +16,17 @@ variables:
   pathtotest: 'PizzaBoxWebApp/PizzaBoxWebApp.Test'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud Connection 1'
+    organization: '$(SonarOrganization)'
+    scannerMode: 'MSBuild'
+    projectKey: '$(SonarProjectKey)'
+    projectName: '$(SonarProjectName)'
+    extraProperties: |
+      sonar.cs.opencover.reportsPaths="$(Build.ArtifactStagingDirectory)/coverage/*"
+      sonar.cs.vstest.reportsPaths="$(Build.ArtifactStagingDirectory)/test/*.trx"
+      sonar.exclusions=**/wwwroot/lib/**/*
 - script: 
     dotnet build --configuration $(buildConfiguration)
   workingDirectory: $(pathtosolution)
@@ -30,6 +41,11 @@ steps:
   workingDirectory: $(pathtosolution)
   displayName: 'dotnet test'
 
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+    
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
