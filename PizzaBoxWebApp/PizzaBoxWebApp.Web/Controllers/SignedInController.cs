@@ -130,7 +130,7 @@ namespace PizzaBoxWebApp.Controllers
                     if (joinedTables.Count() != 0)
                     {
                         var o = joinedTables.First();
-                        int hoursPassed = o.Subtract(now).Hours;
+                        double hoursPassed = now.Subtract(o).TotalHours;
                         if (hoursPassed < 24)
                         {
                             return View("OrderRestriction");
