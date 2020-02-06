@@ -1,6 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Text;
 
 namespace PizzaBox.Domain.Interfaces
 {
@@ -9,6 +8,7 @@ namespace PizzaBox.Domain.Interfaces
         IEnumerable<T> GetItems();
         void Add(T item);
         void Modify(T item);
-        void Remove(string id);
+        int GetNumItems();
+
     }
 }

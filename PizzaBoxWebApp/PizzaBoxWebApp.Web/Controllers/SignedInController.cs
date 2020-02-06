@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
-using PizzaBox.Storing.Repositories;
 using PizzaBoxWebApp.Models;
 
 
@@ -14,18 +12,7 @@ namespace PizzaBoxWebApp.Controllers
     public class SignedInController : Controller
     {
 
-        RepositoryUsers repositoryUsers = new RepositoryUsers();
-        RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
-        RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
-        RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
-        RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
-        RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
-        RepositoryPresetPizzas repositoryPresetPizzas = new RepositoryPresetPizzas();
-        RepositoryStorePresetPizzas repositoryStorePresetPizzas = new RepositoryStorePresetPizzas();
 
-       
-        
-        
         static decimal calculatePrice(Pizzas p, decimal price)
         {
             decimal pizzaPrice = price;
@@ -85,7 +72,7 @@ namespace PizzaBoxWebApp.Controllers
             PizzaList.manyPizzas.Clear();
             string email = TempData["UserEmail"] as string;
             string password = TempData["UserPassword"] as string;
-            
+
             TempData.Keep();
             if (email != null && password != null)
             {
@@ -97,8 +84,8 @@ namespace PizzaBoxWebApp.Controllers
         }
 
         //Place an order
-       
-            //this will actually select the store
+
+        //this will actually select the store
         public IActionResult PlaceOrder()
         {
             return View();
@@ -106,7 +93,7 @@ namespace PizzaBoxWebApp.Controllers
         //////////////////////////////
         #region OrderActions
         [HttpPost]
-        public IActionResult PlaceOrder(StoreInfo st)
+        public IActionResult PlaceOrder(StoreInfo st, [FromServices]IStoreOrdersInfo repositoryStoreOrdersInfo, [FromServices]IOrdersUserInfo repositoryOrdersUserInfo)
         {
             //add the order to the database
             TempData["storeId"] = st.StoreId;
@@ -155,27 +142,27 @@ namespace PizzaBoxWebApp.Controllers
             };
             repositoryStoreOrdersInfo.Add(storeOrdersInfo);
             TempData["orderId"] = ordersUserInfo.OrderId;
-            
+
             TempData.Keep();
-            
+
             return RedirectToAction(nameof(SelectPizza), "SignedIn");
         }
 
         [Route("/SignedIn/PlaceOrder/SelectPizza")]
         public IActionResult SelectPizza()
         {
-            
+
             return View();
         }
 
-       
+
         [HttpGet]
-        public IActionResult CreatePizza(CombinedPizzasViewModel cp)
+        public IActionResult CreatePizza(CombinedPizzasViewModel cp, [FromServices]IPresetPizzas repositoryPresetPizzas)
         {
             
             if (cp.selectedPizza != "Custom")
             {
-                PresetPizzas preset = repositoryPresetPizzas.GetPizza(cp.selectedPizza);
+                var preset = repositoryPresetPizzas.GetPizza(cp.selectedPizza);
                 Pizzas p = new Pizzas()
                 {
                     Size = preset.Size,
@@ -213,7 +200,7 @@ namespace PizzaBoxWebApp.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult CreateCustomPizza(Pizzas pz)
+        public IActionResult CreateCustomPizza(Pizzas pz,[FromServices] IPizzas repositoryPizzas, [FromServices]IStoreInfo repositoryStoreInfo)
         {
             if (pz.Topping1 == "")
             {
@@ -242,10 +229,10 @@ namespace PizzaBoxWebApp.Controllers
         {
             return View();
         }
-        
-     
 
-        public IActionResult SubmitOrder()
+
+
+        public IActionResult SubmitOrder([FromServices] IPizzas repositoryPizzas, [FromServices]IOrdersPizzaInfo repositoryOrdersPizzaInfo)
         {
             
             foreach(Pizzas p in PizzaList.manyPizzas)
@@ -271,11 +258,7 @@ namespace PizzaBoxWebApp.Controllers
             return View();
         }
 
-        
-        public IActionResult UpdateProfile()
-        {
-            return View();
-        }
+      
 
         public IActionResult Logout()
         {

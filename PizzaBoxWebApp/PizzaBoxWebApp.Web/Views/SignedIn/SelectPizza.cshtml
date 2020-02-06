@@ -1,49 +1,22 @@
-﻿@using PizzaBox.Storing.Repositories;
-@using PizzaBox.Domain.Models;
+﻿@inject PizzaBox.Domain.Interfaces.IStorePresetPizzas repositoryStorePresetPizzas
+@inject PizzaBox.Domain.Interfaces.IStoreOrdersInfo repositoryStoreOrdersInfo
+@inject PizzaBox.Domain.Interfaces.IStoreInfo repositoryStoreInfo
+@inject PizzaBox.Domain.Interfaces.IPresetPizzas repositoryPresetPizzas
+
 @model PizzaBoxWebApp.Models.CombinedPizzasViewModel;
 @{
-    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
-    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
-    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
-    RepositoryStorePresetPizzas repositoryStorePresetPizzas = new RepositoryStorePresetPizzas();
-    RepositoryPresetPizzas repositoryPresetPizzas = new RepositoryPresetPizzas();
+
     ViewData["Title"] = "TestView";
     string email = TempData["UserEmail"] as string;
     string password = TempData["UserPassword"] as string;
     TempData.Keep();
     var storeOrders = repositoryStoreOrdersInfo.GetStoreOrders(Convert.ToInt32(TempData["storeId"])).ToList();
-    StoreInfo store = null;
+    PizzaBox.Domain.Models.StoreInfo store = null;
     repositoryStoreInfo.SetStore(Convert.ToInt32(TempData["storeId"]), ref store);
 
 
 
-    @*if (storeOrders.Count() != 0)
-    {
-        var userPurchases = repositoryOrdersUserInfo.GetUserPurchases(email).ToList();
-
-        if (userPurchases.Count() != 0)
-        {
-            var joinedTables = (from e in storeOrders
-                                join f in userPurchases
-                                on e.OrderId equals f.OrderId
-                                orderby f.OrderDateTime descending
-                                select f.OrderDateTime).ToList();
-
-            DateTime now = DateTime.Now;
-            if (joinedTables.Count() != 0)
-            {
-                var o = joinedTables.First();
-                int hours = o.Subtract(now).Hours;
-                if (hours < 24)
-                {
-                    <h1>Sorry! You cannot place another order in this store within 24 hours</h1>
-                    return;
-                }
-
-            }
-
-        }
-    }*@
+    
 
 
 
@@ -51,22 +24,22 @@
     var storePizzas = repositoryStorePresetPizzas.GetStorePizzas(Convert.ToInt32(TempData["storeId"])).ToList();
     int i = 0;
     List<string> storePizzaList = new List<string>();
-    foreach (StorePresetPizzas st in storePizzas)
+    foreach (var st in storePizzas)
     {
-        PresetPizzas temp = repositoryPresetPizzas.GetPizza(st.PizzaName);
+        var temp = repositoryPresetPizzas.GetPizza(st.PizzaName);
         storePizzaList.Add(temp.PizzaName);
     }
 
-        <form asp-controller="SignedIn" asp-action="CreatePizza" method="get">
-            @foreach (string s in storePizzaList)
-            {
-                @Html.RadioButtonFor(e => e.selectedPizza, repositoryPresetPizzas.GetPizza(s).PizzaName)<text>@s</text><br />
-            }
-            @Html.RadioButtonFor(e => e.selectedPizza, "Custom")<text>Custom Pizza</text><br />
-            <input type="submit">
-        </form>
+    <form asp-controller="SignedIn" asp-action="CreatePizza" method="get">
+        @foreach (string s in storePizzaList)
+        {
+            @Html.RadioButtonFor(e => e.selectedPizza, repositoryPresetPizzas.GetPizza(s).PizzaName)<text>@s</text><br />
+        }
+        @Html.RadioButtonFor(e => e.selectedPizza, "Custom")<text>Custom Pizza</text><br />
+        <input type="submit">
+    </form>
 
 
-    
+
 }
 

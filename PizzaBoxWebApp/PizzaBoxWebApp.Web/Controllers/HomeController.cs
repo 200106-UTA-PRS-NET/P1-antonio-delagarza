@@ -2,20 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzaBoxWebApp.Models;
-using PizzaBox.Storing.Repositories;
 using PizzaBox.Domain.Models;
-using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using PizzaBox.Domain.Interfaces;
 
 namespace PizzaBoxWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUsers _users;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUsers users)
         {
             _logger = logger;
+            _users = users;
         }
 
         public IActionResult Index()
@@ -42,9 +43,9 @@ namespace PizzaBoxWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp(UsersViewModel u)
+        public IActionResult SignUp(UsersViewModel u, [FromServices] IUsers repositoryUsers)
         {
-            RepositoryUsers repositoryUsers = new RepositoryUsers();
+           
             Users user = new Users()
             {
                 Email = u.Email,
@@ -72,10 +73,10 @@ namespace PizzaBoxWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignIn(UsersViewModel u)
+        public IActionResult SignIn(UsersViewModel u, [FromServices] IUsers repositoryUsers)
         {
 
-            RepositoryUsers repositoryUsers = new RepositoryUsers();
+            
             Users user = new Users()
             {
                 Email = u.Email,

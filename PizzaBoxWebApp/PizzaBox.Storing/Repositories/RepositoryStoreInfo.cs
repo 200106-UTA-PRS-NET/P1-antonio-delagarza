@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 using System.Linq;
 
 namespace PizzaBox.Storing.Repositories
 {
-    public class RepositoryStoreInfo : IRepository<StoreInfo>
+    public class RepositoryStoreInfo : IStoreInfo
     {
         PizzaDBContext db;
 
@@ -69,28 +66,12 @@ namespace PizzaBox.Storing.Repositories
             
         }
         
-        public void Remove(string id)
-        {
-            int idInt = Convert.ToInt32(id);
-            StoreInfo s = db.StoreInfo.FirstOrDefault(e => e.StoreId == idInt);
-            if (s.StoreId == idInt)
-            {
-                db.Remove(s);
-                db.SaveChanges();
-                Console.WriteLine("User Removed Successfully");
-            }
-            else
-            {
-                Console.WriteLine("Could not find store with this Id");
-                return;
-            }
-        }
 
-        public int NumStores()
+        public int GetNumItems()
         {
             return db.StoreInfo.Count();
         }
-
+        // /////////////////////////////////////
         public void SetStore(int id, ref StoreInfo st)
         {
             foreach (StoreInfo store in db.StoreInfo)

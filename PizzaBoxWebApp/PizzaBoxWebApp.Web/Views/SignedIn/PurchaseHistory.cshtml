@@ -1,15 +1,15 @@
-﻿@using PizzaBox.Storing.Repositories;
-@using PizzaBox.Domain.Models;
+﻿@inject PizzaBox.Domain.Interfaces.IOrdersUserInfo repositoryOrdersUserInfo
+@inject PizzaBox.Domain.Interfaces.IOrdersPizzaInfo repositoryOrdersPizzaInfo
+@inject PizzaBox.Domain.Interfaces.IPizzas repositoryPizzas
+@inject PizzaBox.Domain.Interfaces.IStoreOrdersInfo repositoryStoreOrdersInfo
+@inject PizzaBox.Domain.Interfaces.IStoreInfo repositoryStoreInfo
+
 @{
     ViewData["Title"] = "PurchaseHistory";
     string email = TempData["userEmail"] as string;
     string password = TempData["userPassword"] as string;
     TempData.Keep();
-    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
-    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
-    RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
-    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
-    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
+
 }
 
 <h1>Purchase History of @email </h1>
@@ -21,7 +21,7 @@
     }
     else
     {
-        foreach (OrdersUserInfo temp in userOrders)
+        foreach (var temp in userOrders)
         {
             decimal price = 0M;
             <p>Order Id: @temp.OrderId</p>
@@ -30,9 +30,9 @@
 
 
             var usersOrdersPizzas = repositoryOrdersPizzaInfo.GetOrdersPizzas(temp.OrderId).ToList();
-            foreach (OrdersPizzaInfo of in usersOrdersPizzas)
+            foreach (var of in usersOrdersPizzas)
             {
-                Pizzas pi = repositoryPizzas.GetPizzasbyId(of.PizzaId);
+                var pi = repositoryPizzas.GetPizzasbyId(of.PizzaId);
 
                 <p>Size: @pi.Size</p>
 

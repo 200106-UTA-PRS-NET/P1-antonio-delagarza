@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 using System.Linq;
 
 namespace PizzaBox.Storing.Repositories
 {
-    public class RepositoryStoreOrdersInfo : IRepoNoUpdate<StoreOrdersInfo>
+    public class RepositoryStoreOrdersInfo : IStoreOrdersInfo
     {
 
         PizzaDBContext db;
@@ -49,12 +46,15 @@ namespace PizzaBox.Storing.Repositories
             return query;
         }
 
-
-        public void Remove(string id)
+        public void Modify(StoreOrdersInfo item)
         {
-            
+            throw new NotImplementedException();
         }
-
+        public int GetNumItems()
+        {
+            return db.StoreOrdersInfo.Count();
+        }
+         // ////////////////////////////////////
         public int GetStoreId(int orderId)
         {
             foreach (StoreOrdersInfo st in db.StoreOrdersInfo)
@@ -75,5 +75,7 @@ namespace PizzaBox.Storing.Repositories
 
             return query;
         }
+
+        
     }
 }

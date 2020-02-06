@@ -1,16 +1,11 @@
-﻿@using PizzaBox.Domain.Models;
-@using PizzaBox.Storing.Repositories;
+﻿@inject PizzaBox.Domain.Interfaces.IStoreInfo repositoryStoreInfo
+@inject PizzaBox.Domain.Interfaces.IOrdersUserInfo repositoryOrdersUserInfo
+@inject PizzaBox.Domain.Interfaces.IOrdersPizzaInfo repositoryOrdersPizzaInfo
+@inject PizzaBox.Domain.Interfaces.IPizzas repositoryPizzas
 @{
     ViewData["Title"] = "OrderDetails";
 
-    RepositoryUsers repositoryUsers = new RepositoryUsers();
-    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
-    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
-    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
-    RepositoryPizzas repositoryPizzas = new RepositoryPizzas();
-    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
-    RepositoryPresetPizzas repositoryPresetPizzas = new RepositoryPresetPizzas();
-    RepositoryStorePresetPizzas repositoryStorePresetPizzas = new RepositoryStorePresetPizzas();
+    
     TempData.Keep();
 }
 
@@ -18,14 +13,16 @@
 @{
     //getg store name
     <p>Store: @repositoryStoreInfo.GetStoreName(Convert.ToInt32(TempData["storeId"]))</p>
+    
     var order = repositoryOrdersUserInfo.GetStoreOrderDetails(Convert.ToInt32(TempData["orderId"]));
+  
     <p>Order Id: @order.OrderId</p>
     <p>@order.OrderDateTime.</p>
 
     var usersOrdersPizzas = repositoryOrdersPizzaInfo.GetOrdersPizzas(Convert.ToInt32(TempData["orderId"])).ToList();
     foreach (var u in usersOrdersPizzas)
     {
-        Pizzas pizzas = repositoryPizzas.GetPizzasbyId(u.PizzaId);
+        var pizzas = repositoryPizzas.GetPizzasbyId(u.PizzaId);
         <p>Size: @pizzas.Size</p>
 
         <p>Crust: @pizzas.Crust</p>

@@ -1,15 +1,13 @@
-﻿@using PizzaBox.Storing.Repositories;
-@model PizzaBoxWebApp.Models.StoreInfoViewModel;
+﻿@model PizzaBoxWebApp.Models.StoreInfoViewModel;
+@inject PizzaBox.Domain.Interfaces.IStoreInfo repositoryStoreInfo
 @{
     ViewData["Title"] = "PlaceOrder";
-    
-    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
    
 
 
 }
 @{ 
-    if (repositoryStoreInfo.NumStores() == 0)
+    if (repositoryStoreInfo.GetNumItems() == 0)
     {
         <h1>There are no stores in existance</h1>
     }

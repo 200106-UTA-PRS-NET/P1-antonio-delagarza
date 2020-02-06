@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Domain.Models;
 namespace PizzaBoxWebApp.Controllers
@@ -40,15 +37,7 @@ namespace PizzaBoxWebApp.Controllers
             ViewData["StoreId"] = s.StoreId;
             return View();
         }
-        //TODO
-        public IActionResult CreatePresetPizza()
-        {
-            return View();
-        }
-        //TODO
-        public IActionResult AddPresetPizza()
-        {
-            return View();
-        }
+        
+      
     }
 }

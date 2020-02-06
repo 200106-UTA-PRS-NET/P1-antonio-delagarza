@@ -1,12 +1,13 @@
-﻿@using PizzaBox.Storing.Repositories;
-@using PizzaBox.Domain.Models;
+﻿@inject PizzaBox.Domain.Interfaces.IStoreInfo repositoryStoreInfo
+@inject PizzaBox.Domain.Interfaces.IStoreOrdersInfo repositoryStoreOrdersInfo
+@inject PizzaBox.Domain.Interfaces.IOrdersUserInfo repositoryOrdersUserInfo
+@inject PizzaBox.Domain.Interfaces.IOrdersPizzaInfo repositoryOrdersPizzaInfo
+
+
 @{
     ViewData["Title"] = "ViewStoreOrders";
     int id = Convert.ToInt32(ViewData["storeId"]);
-    RepositoryStoreInfo repositoryStoreInfo = new RepositoryStoreInfo();
-    RepositoryStoreOrdersInfo repositoryStoreOrdersInfo = new RepositoryStoreOrdersInfo();
-    RepositoryOrdersUserInfo repositoryOrdersUserInfo = new RepositoryOrdersUserInfo();
-    RepositoryOrdersPizzaInfo repositoryOrdersPizzaInfo = new RepositoryOrdersPizzaInfo();
+
 }
 
 <h1>View Store Orders</h1>
@@ -17,9 +18,9 @@
     <h3>@repositoryStoreInfo.GetStoreName(id)</h3>
 
     var storeOrders = repositoryStoreOrdersInfo.GetStoreOrders(id).ToList();
-    foreach (StoreOrdersInfo st in storeOrders)
+    foreach (var st in storeOrders)
     {
-        OrdersUserInfo or = repositoryOrdersUserInfo.GetStoreOrderDetails(st.OrderId);
+        var or = repositoryOrdersUserInfo.GetStoreOrderDetails(st.OrderId);
         <hr />
         <p>OrderId: @or.OrderId</p>
         <p>Customer: @or.Email</p>
@@ -27,7 +28,7 @@
 
         var pizzasInfo = repositoryOrdersPizzaInfo.GetOrdersPizzas(or.OrderId).ToList();
 
-        foreach (OrdersPizzaInfo op in pizzasInfo)
+        foreach (var op in pizzasInfo)
         {
             <p>Pizza number: @op.PizzaId</p>
         }

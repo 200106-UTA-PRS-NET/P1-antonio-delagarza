@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PizzaBox.Storing.Repositories
 {
-    public class RepositoryUsers : IRepository<Users>
+    public class RepositoryUsers : IUsers
     {
         PizzaDBContext db;
 
@@ -70,23 +68,14 @@ namespace PizzaBox.Storing.Repositories
             
         }
 
-        public void Remove(string id)
+        public int GetNumItems()
         {
-            Users u = db.Users.FirstOrDefault(e => e.Email == id);
-            if (u.Email == id)
-            {
-                db.Remove(u);
-                db.SaveChanges();
-                Console.WriteLine("User Removed Successfully");
-            }
-            else
-            {
-                Console.WriteLine("Could not find user with this email");
-            }
+           return db.Users.Count();
         }
-
+        // /////////
         public void SignIn(string email, string password, ref Users u)
         {
+           
             foreach(Users user in db.Users)
             {
                 if (user.Email == email)

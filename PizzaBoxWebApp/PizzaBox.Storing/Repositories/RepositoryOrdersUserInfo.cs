@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
+
 using System.Linq;
 
 namespace PizzaBox.Storing.Repositories
 {
 
-    public class RepositoryOrdersUserInfo : IRepoNoUpdate<OrdersUserInfo>
+    public class RepositoryOrdersUserInfo : IOrdersUserInfo
     {
         PizzaDBContext db;
         public RepositoryOrdersUserInfo()
@@ -28,14 +27,14 @@ namespace PizzaBox.Storing.Repositories
             {
                 db.OrdersUserInfo.Add(item);
                 db.SaveChanges();
-               
-                
+
+
             }
             else
             {
                 Console.WriteLine("User not found");
             }
-            
+
         }
 
         public IEnumerable<OrdersUserInfo> GetItems()
@@ -46,11 +45,16 @@ namespace PizzaBox.Storing.Repositories
             return query;
         }
 
-
-        public void Remove(string id)
+        public void Modify(OrdersUserInfo item)
         {
-            
+            throw new NotImplementedException();
         }
+
+        public int GetNumItems()
+        {
+            return db.OrdersUserInfo.Count();
+        }
+        
         public IEnumerable<OrdersUserInfo> GetUserPurchases(string email)
         {
             var query = from e in db.OrdersUserInfo
@@ -62,7 +66,7 @@ namespace PizzaBox.Storing.Repositories
         }
         public OrdersUserInfo GetStoreOrderDetails(int id)
         {
-            foreach(OrdersUserInfo o in db.OrdersUserInfo)
+            foreach (OrdersUserInfo o in db.OrdersUserInfo)
             {
                 if (o.OrderId == id)
                 {

@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,14 +26,14 @@ namespace PizzaBoxWebApp
             services.AddDbContext<PizzaDBContext>(options =>
                 options.UseSqlServer(connection));
 
-            services.AddTransient<IRepoNoUpdate<OrdersPizzaInfo>, RepositoryOrdersPizzaInfo>();
-            services.AddTransient<IRepoNoUpdate<OrdersUserInfo>, RepositoryOrdersUserInfo>();
-            services.AddTransient<IRepoNoUpdate<Pizzas>, RepositoryPizzas>();
-            services.AddTransient<IRepoNoUpdate<PresetPizzas>, RepositoryPresetPizzas>();
-            services.AddTransient<IRepository<StoreInfo>, RepositoryStoreInfo>();
-            services.AddTransient<IRepoNoUpdate<StoreOrdersInfo>, RepositoryStoreOrdersInfo>();
-            services.AddTransient<IRepository<StorePresetPizzas>, RepositoryStorePresetPizzas>();
-            services.AddTransient<IRepository<Users>, RepositoryUsers>();
+            services.AddTransient<IOrdersPizzaInfo, RepositoryOrdersPizzaInfo>();
+            services.AddTransient<IOrdersUserInfo, RepositoryOrdersUserInfo>();
+            services.AddTransient<IPizzas, RepositoryPizzas>();
+            services.AddTransient<IPresetPizzas, RepositoryPresetPizzas>();
+            services.AddTransient<IStoreInfo, RepositoryStoreInfo>();
+            services.AddTransient<IStoreOrdersInfo, RepositoryStoreOrdersInfo>();
+            services.AddTransient<IStorePresetPizzas, RepositoryStorePresetPizzas>();
+            services.AddTransient<IUsers, RepositoryUsers>();
 
             services.AddControllersWithViews();
         }

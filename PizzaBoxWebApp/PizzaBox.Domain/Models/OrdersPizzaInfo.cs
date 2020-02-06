@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace PizzaBox.Domain.Models
 {
     public partial class OrdersPizzaInfo
