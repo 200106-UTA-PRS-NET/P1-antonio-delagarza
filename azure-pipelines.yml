@@ -66,7 +66,7 @@ steps:
 ## CDelivery Start taking artifact as an input
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'Visual Studio Enterprise with MSDN(581982a8-2cbb-485e-b313-4da4b27d42f1)'
+    azureSubscription: 'Azure subscription 1(df200939-e69d-451d-a8b5-48d9c18a706b)'
     appType: 'webAppLinux'
     appName: 'ezpizza'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
