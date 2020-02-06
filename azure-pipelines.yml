@@ -52,3 +52,21 @@ steps:
     testResultsFiles: '*.trx'
     searchFolder: '$(Build.ArtifactStagingDirectory)/PizzaBoxWebApp.Test'
   displayName: 'Publish test results'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    arguments: --configuration $(buildConfiguration)
+    publishWebProjects: true
+    zipAfterPublish: true
+    workingDirectory: '$(pathtosolution)'
+  displayName: 'dotnet publish + zip'
+####--- CI END
+
+## CDelivery Start taking artifact as an input
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Visual Studio Enterprise with MSDN(581982a8-2cbb-485e-b313-4da4b27d42f1)'
+    appType: 'webAppLinux'
+    appName: 'ezpizza'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
